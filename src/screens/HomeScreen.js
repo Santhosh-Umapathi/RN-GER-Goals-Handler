@@ -1,65 +1,83 @@
 import React, { Component } from 'react';
-import { Text, TextInput, StyleSheet, View, TouchableOpacity, Button, Flatlist } from 'react-native';
+import { StyleSheet, View, FlatList, Button } from 'react-native';
+//Components
+import GoalItem from '../components/GoalItem';
+import GoalInput from "../components/GoalInput";
 
-export default class HomeScreen extends Component
-{
-	constructor(props)
-	{
-		super(props);
-		this.state =
-		{
-			text: '',
-			goals: []
-		};
-	}
+class HomeScreen extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      goals: [],
+      isVisible: false
+    };
+  }
 
+  saveGoal = (textVal) => {
+    this.setState({
+      goals: [
+        ...this.state.goals,
+        {
+          id: Math.floor(Math.random() * 999).toString(),
+          goal: textVal
+        },
+      ],
+      isVisible: false
+    });
+  };
 
-	//TODO: method to handle user input
-	enteredText = (text) => {
-		this.setState({ text });
-		console.log(this.state.text)
-	};
-	
-	//TODO: method to save goals to array
-	saveGoal = () => {
+  deleteGoal = (itemID) =>
+  {
+    this.setState({
+      goals: this.state.goals.filter(
+        currentGoal => currentGoal.id !== itemID)
+    })
+  };
 
-	};
-
-
-	render()
-	{
-		return (
+  render() {
+    return (
       <View style={styles.containerView}>
-		<View style={styles.handlerStyle}>
-          <TextInput
-            placeholder="Enter Goals"
-            onChangeText={(text) => { this.enteredText(text) }}
-			value={this.state.text}
-            style={styles.textInputStyle}
-          />
-          <Button title="Add" onPress={() => {}} />
-				</View>
-			
-      </View>
+        
+      <Button
+       title="Add New Goal"
+       onPress={() => {this.setState({ isVisible: true });}}
+      />
+
+      <GoalInput //Component
+       addGoal={this.saveGoal}
+       visible={this.state.isVisible}
+       addPressed={() => this.setState({ isVisible: false })}
+       cancelPressed={() => this.setState({ isVisible: false })}
+      />
+
+      <FlatList
+       data={this.state.goals}
+       keyExtractor={(key) => key.id}
+       renderItem={({ item }) => {
+        return (
+         <GoalItem //Component
+          itemGoal={item.goal}
+          //deleteGoal={this.deleteGoal} // Option 1
+          //id = {item.id}
+          //deleteGoal={this.deleteGoal.bind(this, item.id)} //Option 2
+          deleteGoal={() => {
+           this.deleteGoal(item.id);
+          }} //Option 3
+         />
+        );
+       }}
+      />
+     </View>
     );
-	}
+  }
 }
+
+
 
 const styles = StyleSheet.create({
   containerView: {
     flex: 1,
   },
-  textInputStyle: {
-    borderColor: "lightblue",
-    borderWidth: 0.5,
-    paddingHorizontal: 10,
-    paddingVertical: 5,
-	margin: 10,
-	width: "80%"
-  },
-	handlerStyle: {
-		flexDirection: 'row',
-		justifyContent: 'space-evenly',
-		alignItems:'center'
-  }
 });
+
+export default HomeScreen;
