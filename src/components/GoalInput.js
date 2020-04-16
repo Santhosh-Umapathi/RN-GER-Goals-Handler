@@ -1,11 +1,11 @@
 import React, {useState} from 'react';
-import { View, Modal, TextInput, StyleSheet, TouchableOpacity, Button  } from 'react-native';
+import { View, Modal, TextInput, StyleSheet, Button, Text } from 'react-native';
 
 const GoalInput = (props) =>
 {
 	const [enteredText, setEnteredText] = useState('');
 
-addGoalHandler = (params) => {
+addGoalHandler = () => {
   props.addGoal(enteredText);
   setEnteredText('');
   props.visible
@@ -17,7 +17,8 @@ addGoalHandler = (params) => {
       visible={props.visible}
       animationType='slide'
     >
-    <View style={styles.handlerStyle}>
+      <View style={styles.handlerStyle}>
+        <Text style={{fontSize: 28, marginBottom: 40}}>Add a New Goal</Text>
      <TextInput
       placeholder="Enter Goals"
       onChangeText={(text) => setEnteredText(text)}
@@ -30,7 +31,7 @@ addGoalHandler = (params) => {
       <Button
        title="Add"
        //onPress={() => { props.addGoal(enteredText) }} //Option 1
-       onPress={this.addGoalHandler} //Option 2
+       onPress={addGoalHandler} //Option 2
       />
      </View>
     </View>
@@ -50,7 +51,7 @@ const styles = StyleSheet.create({
   handlerStyle: {
     justifyContent: "center",
     alignItems: "center",
-    flex: 1
+    flex: 1,
   },
   buttonView:
   {

@@ -15,13 +15,11 @@ class HomeScreen extends Component {
 
   saveGoal = (textVal) => {
     this.setState({
-      goals: [
-        ...this.state.goals,
+      goals: [...this.state.goals,
         {
           id: Math.floor(Math.random() * 999).toString(),
           goal: textVal
-        },
-      ],
+        }],
       isVisible: false
     });
   };
@@ -33,6 +31,12 @@ class HomeScreen extends Component {
         currentGoal => currentGoal.id !== itemID)
     })
   };
+
+  modalExit = () =>
+  {
+    this.setState({ isVisible: false });
+  }
+  
 
   render() {
     return (
@@ -46,23 +50,19 @@ class HomeScreen extends Component {
       <GoalInput //Component
        addGoal={this.saveGoal}
        visible={this.state.isVisible}
-       addPressed={() => this.setState({ isVisible: false })}
-       cancelPressed={() => this.setState({ isVisible: false })}
+       cancelPressed={this.modalExit}
       />
 
       <FlatList
        data={this.state.goals}
-       keyExtractor={(key) => key.id}
+       keyExtractor={key => key.id}
        renderItem={({ item }) => {
         return (
          <GoalItem //Component
           itemGoal={item.goal}
-          //deleteGoal={this.deleteGoal} // Option 1
-          //id = {item.id}
+          //deleteGoal={this.deleteGoal} id = {item.id}       // Option 1
           //deleteGoal={this.deleteGoal.bind(this, item.id)} //Option 2
-          deleteGoal={() => {
-           this.deleteGoal(item.id);
-          }} //Option 3
+          deleteGoal={() => {this.deleteGoal(item.id);}}    //Option 3
          />
         );
        }}
@@ -81,3 +81,4 @@ const styles = StyleSheet.create({
 });
 
 export default HomeScreen;
+

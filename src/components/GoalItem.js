@@ -6,8 +6,7 @@ const GoalItem = props =>
 	return (
   <TouchableOpacity
    //onPress={props.deleteGoal.bind(this, props.id)} //Option 1
-   //onPress={props.deleteGoal} //Option 2
-    onPress = {props.deleteGoal}
+   onPress={props.deleteGoal} //Option 2 , Option 3
   >
    <View style={styles.rowStyle}>
     <Text style={styles.rowText}>{props.itemGoal}</Text>
