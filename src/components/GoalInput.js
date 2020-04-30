@@ -5,11 +5,12 @@ const GoalInput = (props) =>
 {
 	const [enteredText, setEnteredText] = useState('');
 
-addGoalHandler = () => {
-  props.addGoal(enteredText);
-  setEnteredText('');
-  props.visible
-}
+  addGoalHandler = () =>
+  {
+    props.addGoal(enteredText);
+    setEnteredText('');
+    props.visible
+  }
 
 
   return (

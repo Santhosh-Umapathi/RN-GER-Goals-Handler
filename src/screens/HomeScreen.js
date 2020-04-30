@@ -1,68 +1,58 @@
-import React, { Component } from 'react';
+import React, { useState } from 'react';
 import { StyleSheet, View, FlatList, Button } from 'react-native';
 //Components
 import GoalItem from '../components/GoalItem';
 import GoalInput from "../components/GoalInput";
 
-class HomeScreen extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      goals: [],
-      isVisible: false
-    };
-  }
+const HomeScreen = () =>
+{
+  
+  const [goals, setgoals] = useState([])
+  const [isVisible, setisVisible] = useState(false)
 
-  saveGoal = (textVal) => {
-    this.setState({
-      goals: [...this.state.goals,
+
+  const saveGoal = (textVal) => {
+  //Arrow function to set goals to be 100% guaranteed of current state snapshot
+    setgoals(currentGoals => [...currentGoals,
         {
           id: Math.floor(Math.random() * 999).toString(),
           goal: textVal
-        }],
-      isVisible: false
-    });
+        }])
+      setisVisible(false)
   };
 
-  deleteGoal = (itemID) =>
+  const deleteGoal = (itemID) =>
   {
-    this.setState({
-      goals: this.state.goals.filter(
-        currentGoal => currentGoal.id !== itemID)
-    })
+    setgoals(goals.filter(currentGoal => currentGoal.id !== itemID))
   };
 
-  modalExit = () =>
-  {
-    this.setState({ isVisible: false });
-  }
-  
 
-  render() {
+  modalExit = () => { setisVisible(false) }
+
     return (
       <View style={styles.containerView}>
         
       <Button
        title="Add New Goal"
-       onPress={() => {this.setState({ isVisible: true });}}
+       onPress={() => setisVisible(true)}
       />
 
       <GoalInput //Component
-       addGoal={this.saveGoal}
-       visible={this.state.isVisible}
-       cancelPressed={this.modalExit}
+       addGoal={saveGoal}
+       visible={isVisible}
+       cancelPressed={modalExit}
       />
 
       <FlatList
-       data={this.state.goals}
+       data={goals}
        keyExtractor={key => key.id}
        renderItem={({ item }) => {
         return (
          <GoalItem //Component
           itemGoal={item.goal}
-          //deleteGoal={this.deleteGoal} id = {item.id}       // Option 1
-          //deleteGoal={this.deleteGoal.bind(this, item.id)} //Option 2
-          deleteGoal={() => {this.deleteGoal(item.id);}}    //Option 3
+          //deleteGoal={deleteGoal} id = {item.id}       // Option 1
+          //deleteGoal={deleteGoal.bind(this, item.id)} //Option 2
+          deleteGoal={() => {deleteGoal(item.id)}}    //Option 3
          />
         );
        }}
@@ -70,7 +60,6 @@ class HomeScreen extends Component {
      </View>
     );
   }
-}
 
 
 

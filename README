@@ -1,0 +1,14 @@
+//MARK: Topics Covered
+
+//------------------------------------------------------------------
+//MARK: HomeScreen
+
+- Arrow function in setState
+- .filter to delete goals
+- .bind used for function with params
+- Flatlist || .map, ScrollView
+
+//------------------------------------------------------------------
+//MARK: Goal Input Screen
+
+- Modal View
